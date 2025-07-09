@@ -144,7 +144,7 @@
     /* Footer */
     footer{padding:2rem 0;text-align:center;border-top:1px solid #333;color:#888}
     .social-links{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem}
-    .social-link{width:40px;height:40px;border:1px solid #333;color:#888;text-decoration:none;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:.3s}
+    .social-link{width:80px;height:40px;border:1px solid #333;color:#888;text-decoration:none;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:.3s}
     .social-link:hover{border-color:#00d4ff;color:#00d4ff}
 
     /* Responsive */
@@ -337,35 +337,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="">
-    <div class="container">
-      <div class="social-links">
-        <a href="https://linkedin.com/in/tovadavis" class="social-link">LinkedIn</a>
-        <a href="https://github.com/tovadavis" class="social-link">GitHub</a>
-        <a href="mailto:tovadavis0@gmail.com" class="social-link">Email</a>
-        <a href="tel:0556720613" class="social-link">Phone</a>
-      </div>
-      <p class="">© 2025 Tova Davis. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- JS -->
-  <script>
-    function toggleNav(){document.getElementById('navMenu').classList.toggle('active')}
-    function closeNav(){document.getElementById('navMenu').classList.remove('active')}
-
-    /* smooth scrolling */
-    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
-      anchor.addEventListener('click',e=>{
-        e.preventDefault();
-        const target=document.querySelector(anchor.getAttribute('href'));
-        target&&target.scrollIntoView({behavior:'smooth',block:'start'});
-        closeNav();
-      });
-    });
-  </script>
-  <!-- Hebrew Section -->
+    <!-- Hebrew Section -->
 <section id="hebrew" class="section" dir="rtl" style="text-align:right">
   <div class="container">
     <!-- Hebrew Hero -->
@@ -485,5 +457,35 @@
     </div>
   </div>
 </section>
+
+  
+  <!-- Footer -->
+  <footer class="">
+    <div class="container">
+      <div class="social-links">
+        <a href="https://linkedin.com/in/tovadavis" class="social-link">LinkedIn</a>
+        <a href="https://github.com/tovadavis" class="social-link">GitHub</a>
+        <a href="mailto:tovadavis0@gmail.com" class="social-link">Email</a>
+        <a href="tel:0556720613" class="social-link">Phone</a>
+      </div>
+      <p class="">© 2025 Tova Davis. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    function toggleNav(){document.getElementById('navMenu').classList.toggle('active')}
+    function closeNav(){document.getElementById('navMenu').classList.remove('active')}
+
+    /* smooth scrolling */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+      anchor.addEventListener('click',e=>{
+        e.preventDefault();
+        const target=document.querySelector(anchor.getAttribute('href'));
+        target&&target.scrollIntoView({behavior:'smooth',block:'start'});
+        closeNav();
+      });
+    });
+  </script>
 
 </body></html>
