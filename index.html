@@ -1,912 +1,367 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tova Davis - Software Engineer</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
-            color: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 20% 50%, #1a1a2e 0%, transparent 50%),
-                        radial-gradient(circle at 80% 20%, #16213e 0%, transparent 50%),
-                        radial-gradient(circle at 40% 80%, #0f3460 0%, transparent 50%);
-            animation: bgShift 20s ease-in-out infinite;
-        }
-
-        @keyframes bgShift {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            right: 0;
-            padding: 2rem;
-            z-index: 1000;
-        }
-
-        .nav-toggle {
-            display: flex;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 4px;
-        }
-
-        .nav-line {
-            width: 25px;
-            height: 2px;
-            background: #00d4ff;
-            transition: all 0.3s ease;
-        }
-
-        .nav-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 300px;
-            height: 100vh;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: right 0.3s ease;
-            gap: 2rem;
-        }
-
-        .nav-menu.active {
-            right: 0;
-        }
-
-        .nav-menu a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: 300;
-            letter-spacing: 2px;
-            position: relative;
-            transition: color 0.3s ease;
-        }
-
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background: #00d4ff;
-            transition: all 0.3s ease;
-        }
-
-        .nav-menu a:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        .nav-menu a:hover {
-            color: #00d4ff;
-        }
-
-        /* Main Content */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-
-        .hero-content {
-            max-width: 600px;
-        }
-
-        .hero-subtitle {
-            font-size: 1rem;
-            color: #00d4ff;
-            letter-spacing: 3px;
-            margin-bottom: 1rem;
-            animation: slideInLeft 1s ease 0.3s both;
-        }
-
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            animation: slideInLeft 1s ease 0.6s both;
-        }
-
-        .hero-description {
-            font-size: 1.2rem;
-            color: #cccccc;
-            margin-bottom: 2rem;
-            animation: slideInLeft 1s ease 0.9s both;
-        }
-
-        .hero-cta {
-            display: inline-block;
-            padding: 1rem 2rem;
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
-            text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            animation: slideInLeft 1s ease 1.2s both;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: #00d4ff;
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .hero-cta:hover::before {
-            left: 0;
-        }
-
-        .hero-cta:hover {
-            color: #0a0a0a;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Code Animation */
-        .code-animation {
-            position: absolute;
-            right: 5%;
-            top: 50%;
-            transform: translateY(-50%);
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            color: #00d4ff;
-            opacity: 0.3;
-            animation: typewriter 4s steps(40) infinite;
-        }
-
-        @keyframes typewriter {
-            0% { width: 0; }
-            50% { width: 100%; }
-            100% { width: 0; }
-        }
-
-        /* Sections */
-        .section {
-            padding: 5rem 0;
-            position: relative;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .section-title::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #333333, transparent);
-        }
-
-        .section-title span {
-            background: #0a0a0a;
-            padding: 0 2rem;
-            color: #00d4ff;
-        }
-
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            color: #cccccc;
-            line-height: 1.8;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
-            border: 1px solid #333333;
-            background: rgba(255, 255, 255, 0.02);
-            transition: all 0.3s ease;
-        }
-
-        .stat-item:hover {
-            border-color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #00d4ff;
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #888888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Skills Section */
-        .skills-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 2rem;
-            border-radius: 10px;
-            border: 1px solid #333333;
-            transition: all 0.3s ease;
-        }
-
-        .skill-category:hover {
-            border-color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
-        }
-
-        .skill-category h3 {
-            color: #00d4ff;
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-
-        .skill-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            background: #1a1a1a;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #cccccc;
-            border: 1px solid #333333;
-            transition: all 0.3s ease;
-        }
-
-        .skill-tag:hover {
-            background: #00d4ff;
-            color: #0a0a0a;
-            border-color: #00d4ff;
-        }
-
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            gap: 3rem;
-        }
-
-        .project-item {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            padding: 2rem 0;
-            border-bottom: 1px solid #333333;
-        }
-
-        .project-item:nth-child(even) {
-            direction: rtl;
-        }
-
-        .project-item:nth-child(even) > * {
-            direction: ltr;
-        }
-
-        .project-info h3 {
-            color: #00d4ff;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .project-description {
-            color: #cccccc;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-badge {
-            background: rgba(0, 212, 255, 0.1);
-            color: #00d4ff;
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            border: 1px solid #00d4ff;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .project-link {
-            color: #ffffff;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            border: 1px solid #666666;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-
-        .project-link:hover {
-            border-color: #00d4ff;
-            color: #00d4ff;
-        }
-
-        .project-visual {
-            height: 250px;
-            background: linear-gradient(135deg, #1a1a2e, #16213e);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-visual::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 10px,
-                rgba(0, 212, 255, 0.1) 10px,
-                rgba(0, 212, 255, 0.1) 20px
-            );
-        }
-
-        .project-visual span {
-            font-size: 1.2rem;
-            color: #00d4ff;
-            z-index: 1;
-        }
-
-        /* Contact Section */
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .contact-form {
-            display: grid;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .form-group {
-            position: relative;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #333333;
-            border-radius: 5px;
-            color: #ffffff;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #00d4ff;
-            background: rgba(0, 212, 255, 0.1);
-        }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder {
-            color: #888888;
-        }
-
-        .submit-btn {
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: #00d4ff;
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .submit-btn:hover::before {
-            left: 0;
-        }
-
-        .submit-btn:hover {
-            color: #0a0a0a;
-        }
-
-        /* Footer */
-        footer {
-            padding: 2rem 0;
-            text-align: center;
-            border-top: 1px solid #333333;
-            color: #888888;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border: 1px solid #333333;
-            color: #888888;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .social-link:hover {
-            border-color: #00d4ff;
-            color: #00d4ff;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-            
-            .project-item {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-            
-            .project-item:nth-child(even) {
-                direction: ltr;
-            }
-            
-            .code-animation {
-                display: none;
-            }
-            
-            .container {
-                padding: 0 1rem;
-            }
-        }
-    </style>
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tova Davis – Software Engineer</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;color:#fff;line-height:1.6;overflow-x:hidden}
+
+    /* Animated background */
+    .bg-animation{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 20% 50%,#1a1a2e 0%,transparent 50%),radial-gradient(circle at 80% 20%,#16213e 0%,transparent 50%),radial-gradient(circle at 40% 80%,#0f3460 0%,transparent 50%);animation:bgShift 20s ease-in-out infinite}
+    @keyframes bgShift{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+    /* Navigation */
+    nav{position:fixed;top:0;right:0;padding:2rem;z-index:1000}
+    .nav-toggle{display:flex;flex-direction:column;gap:4px;cursor:pointer}
+    .nav-line{width:25px;height:2px;background:#00d4ff;transition:.3s}
+    .nav-menu{position:fixed;top:0;right:-100%;width:300px;height:100vh;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2rem;transition:right .3s}
+    .nav-menu.active{right:0}
+    .nav-menu a{color:#fff;text-decoration:none;font-size:1.2rem;font-weight:300;letter-spacing:2px;position:relative;transition:.3s}
+    .nav-menu a::after{content:'';position:absolute;width:0;height:2px;bottom:-5px;left:50%;background:#00d4ff;transition:.3s}
+    .nav-menu a:hover::after{width:100%;left:0}
+    .nav-menu a:hover{color:#00d4ff}
+
+    /* Containers & hero */
+    .container{max-width:1200px;margin:0 auto;padding:0 2rem}
+    .hero{height:100vh;display:flex;align-items:center;position:relative}
+    .hero-content{max-width:600px}
+    .hero-subtitle{font-size:1rem;color:#00d4ff;letter-spacing:3px;margin-bottom:1rem;animation:slideInLeft 1s ease .3s both}
+    .hero-title{font-size:4rem;font-weight:700;margin-bottom:1rem;animation:slideInLeft 1s ease .6s both}
+    .hero-description{font-size:1.2rem;color:#ccc;margin-bottom:2rem;animation:slideInLeft 1s ease .9s both}
+
+    /* View Projects button - New clean class */
+    .view-projects-btn{
+      display:inline-block;
+      padding:1rem 2rem;
+      background:none;
+      border:2px solid #00d4ff;
+      color:#ffffff;
+      text-decoration:none;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-weight:600;
+      position:relative;
+      overflow:hidden;
+      transition:all 0.3s ease;
+      animation:slideInLeft 1s ease 1.2s both;
+    }
+    .view-projects-btn::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:#00d4ff;
+      z-index:-1;
+      transition:left 0.3s ease;
+    }
+    .view-projects-btn:hover::before{
+      left:0;
+    }
+    .view-projects-btn:hover{
+      color:#0a0a0a;
+    }
+
+    @keyframes slideInLeft{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
+
+    .code-animation{position:absolute;right:5%;top:50%;transform:translateY(-50%);font-family:'Courier New',monospace;font-size:.9rem;color:#00d4ff;opacity:.3;animation:typewriter 4s steps(40) infinite}
+    @keyframes typewriter{0%{width:0}50%{width:100%}100%{width:0}}
+
+    /* Sections */
+    .section{padding:5rem 0;position:relative}
+    .section-title{font-size:2.5rem;margin-bottom:3rem;text-align:center}
+    .section-title span{color:#00d4ff}
+
+    /* About */
+    .about-content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .about-text{font-size:1.1rem;color:#ccc;line-height:1.8}
+
+    /* Skills */
+    .skills-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+    .skill-category{background:rgba(255,255,255,.05);padding:2rem;border-radius:10px;border:1px solid #333;transition:.3s}
+    .skill-category:hover{border-color:#00d4ff;background:rgba(0,212,255,.1)}
+    .skill-category h3{color:#00d4ff;margin-bottom:1.5rem;font-size:1.3rem}
+    .skill-list{display:flex;flex-wrap:wrap;gap:.5rem}
+    .skill-tag{background:#1a1a1a;padding:.5rem 1rem;border-radius:20px;font-size:.9rem;color:#ccc;border:1px solid #333;transition:.3s}
+    .skill-tag:hover{background:#00d4ff;color:#0a0a0a;border-color:#00d4ff}
+
+    /* Projects */
+    .projects-grid{display:grid;gap:3rem}
+    .project-item{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding:2rem 0;border-bottom:1px solid #333}
+    .project-item:nth-child(even){direction:rtl}.project-item:nth-child(even)>*{direction:ltr}
+    .project-info h3{color:#00d4ff;font-size:1.5rem;margin-bottom:1rem}
+    .project-description{color:#ccc;margin-bottom:1.5rem;line-height:1.6}
+    .project-tech{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+    .tech-badge{background:rgba(0,212,255,.1);color:#00d4ff;padding:.3rem .8rem;border-radius:15px;font-size:.8rem;border:1px solid #00d4ff}
+    .project-links{display:flex;gap:1rem}
+    .project-link{color:#fff;text-decoration:none;padding:.5rem 1rem;border:1px solid #666;border-radius:5px;transition:.3s;font-size:.9rem}
+    .project-link:hover{border-color:#00d4ff;color:#00d4ff}
+    .project-visual{height:250px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .project-visual::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(0,212,255,.1) 10px,rgba(0,212,255,.1) 20px)}
+    .project-visual span{font-size:1.2rem;color:#00d4ff;z-index:1}
+
+    /* Contact */
+    .contact-content{max-width:600px;margin:0 auto;text-align:center}
+    
+    /* Email button - New clean class */
+    .email-btn{
+      display:inline-block;
+      padding:1rem 2rem;
+      background:none;
+      border:2px solid #00d4ff;
+      color:#ffffff;
+      border-radius:5px;
+      font-size:1rem;
+      text-decoration:none;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      transition:all 0.3s ease;
+    }
+    .email-btn::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:#00d4ff;
+      z-index:-1;
+      transition:left 0.3s ease;
+    }
+    .email-btn:hover::before{
+      left:0;
+    }
+    .email-btn:hover{
+      color:#0a0a0a;
+    }
+
+    /* Footer */
+    footer{padding:2rem 0;text-align:center;border-top:1px solid #333;color:#888}
+    .social-links{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem}
+    .social-link{width:40px;height:40px;border:1px solid #333;color:#888;text-decoration:none;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:.3s}
+    .social-link:hover{border-color:#00d4ff;color:#00d4ff}
+
+    /* Responsive */
+    @media(max-width:768px){
+      .hero-title{font-size:2.5rem}
+      .about-content{grid-template-columns:1fr;gap:2rem}
+      .project-item{grid-template-columns:1fr;gap:1.5rem}
+      .project-item:nth-child(even){direction:ltr}
+      .code-animation{display:none}
+      .container{padding:0 1rem}
+    }
+  </style>
 </head>
-<body>
-    <div class="bg-animation"></div>
-    
-    <nav>
-        <div class="nav-toggle" onclick="toggleNav()">
-            <div class="nav-line"></div>
-            <div class="nav-line"></div>
-            <div class="nav-line"></div>
-        </div>
-        <div class="nav-menu" id="navMenu">
-            <a href="#home" onclick="closeNav()">Home</a>
-            <a href="#about" onclick="closeNav()">About</a>
-            <a href="#skills" onclick="closeNav()">Skills</a>
-            <a href="#projects" onclick="closeNav()">Projects</a>
-            <a href="#contact" onclick="closeNav()">Contact</a>
-        </div>
-    </nav>
+<body class="">
+  <div class="bg-animation"></div>
 
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-subtitle">SOFTWARE ENGINEER</div>
-                <h1 class="hero-title">Tova Davis</h1>
-                <p class="hero-description">
-                    Enthusiastic developer with a strong technical foundation and positive "can do" attitude. 
-                    Quick learner who adapts well to new technologies and delivers innovative, high-quality solutions.
-                </p>
-                <a href="#projects" class="hero-cta">View My Work</a>
-            </div>
-            <div class="code-animation">
-                <div>const developer = {</div>
-                <div>&nbsp;&nbsp;name: "Tova Davis",</div>
-                <div>&nbsp;&nbsp;skills: ["Java", "C", "Python"],</div>
-                <div>&nbsp;&nbsp;passion: "Problem Solving"</div>
-                <div>};</div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="section">
-        <div class="container">
-            <h2 class="section-title"><span>About Me</span></h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>I'm a Computer Science graduate from The Open University of Israel with a strong technical foundation and excellent problem-solving skills. With experience in tutoring programming courses and developing robust, scalable systems, I'm passionate about creating innovative solutions.</p>
-                    <br>
-                    <p>As a motivated, independent, and detail-oriented developer, I excel in collaborative team environments. My excellent communication skills and "can do" attitude drive me to deliver high-quality software solutions across various technologies and platforms.</p>
-                </div>
-                <div class="about-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">3+</div>
-                        <div class="stat-label">Years Experience</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">87</div>
-                        <div class="stat-label">GPA Score</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">6+</div>
-                        <div class="stat-label">Technologies</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">100</div>
-                        <div class="stat-label">Security Project Grade</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills" class="section">
-        <div class="container">
-            <h2 class="section-title"><span>Technical Skills</span></h2>
-            <div class="skills-container">
-                <div class="skill-category">
-                    <h3>Programming Languages</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Java</span>
-                        <span class="skill-tag">C</span>
-                        <span class="skill-tag">Python</span>
-                        <span class="skill-tag">C++</span>
-                        <span class="skill-tag">HTML</span>
-                        <span class="skill-tag">SQL</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Frameworks & Technologies</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Spring Framework</span>
-                        <span class="skill-tag">React</span>
-                        <span class="skill-tag">JavaFX</span>
-                        <span class="skill-tag">Kerberos Protocol</span>
-                        <span class="skill-tag">KDC Server</span>
-                        <span class="skill-tag">Assembly</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Operating Systems & Tools</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Linux (Ubuntu)</span>
-                        <span class="skill-tag">Windows</span>
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">GitHub</span>
-                        <span class="skill-tag">System Programming</span>
-                        <span class="skill-tag">Online Security</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <h3>Languages & Teaching</h3>
-                    <div class="skill-list">
-                        <span class="skill-tag">Hebrew (Native)</span>
-                        <span class="skill-tag">English (High Level)</span>
-                        <span class="skill-tag">Tutoring</span>
-                        <span class="skill-tag">Mathematics</span>
-                        <span class="skill-tag">Operating Systems</span>
-                        <span class="skill-tag">Communication</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="section">
-        <div class="container">
-            <h2 class="section-title"><span>Featured Projects</span></h2>
-            <div class="projects-grid">
-                <div class="project-item">
-                    <div class="project-info">
-                        <h3>Public Auction Website</h3>
-                        <p class="project-description">
-                            Developed a comprehensive public auction website using Java and the Spring framework, 
-                            with a user-friendly React interface. The robust, scalable system effectively handles 
-                            duplicates and demonstrates strong problem-solving skills and attention to detail.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-badge">Java</span>
-                            <span class="tech-badge">Spring Framework</span>
-                            <span class="tech-badge">React</span>
-                            <span class="tech-badge">Web Development</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">Live Demo</a>
-                            <a href="#" class="project-link">GitHub</a>
-                        </div>
-                    </div>
-                    <div class="project-visual">
-                        <span>🏛️ Auction Platform</span>
-                    </div>
-                </div>
-                
-                <div class="project-item">
-                    <div class="project-info">
-                        <h3>Secure Client-Server Messaging Service</h3>
-                        <p class="project-description">
-                            Developed a secure client-server messaging service using Python, based on the Kerberos protocol. 
-                            The project includes a KDC server and places strong emphasis on compliance with security rules. 
-                            Final project for Online Security course - Grade: 100.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-badge">Python</span>
-                            <span class="tech-badge">Kerberos Protocol</span>
-                            <span class="tech-badge">KDC Server</span>
-                            <span class="tech-badge">Security</span>
-                            <span class="tech-badge">Cryptography</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">Live Demo</a>
-                            <a href="#" class="project-link">GitHub</a>
-                        </div>
-                    </div>
-                    <div class="project-visual">
-                        <span>🔐 Secure Messaging</span>
-                    </div>
-                </div>
-                
-                <div class="project-item">
-                    <div class="project-info">
-                        <h3>Assembler System</h3>
-                        <p class="project-description">
-                            Developed a system that encodes assembly code into machine language. 
-                            Robust and scalable system, developed in C over Linux OS. 
-                            Final project for System Programming course - Grade: 96.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-badge">C</span>
-                            <span class="tech-badge">Linux</span>
-                            <span class="tech-badge">Assembly</span>
-                            <span class="tech-badge">System Programming</span>
-                            <span class="tech-badge">Machine Language</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">Live Demo</a>
-                            <a href="#" class="project-link">GitHub</a>
-                        </div>
-                    </div>
-                    <div class="project-visual">
-                        <span>⚙️ Assembler System</span>
-                    </div>
-                </div>
-
-                <div class="project-item">
-                    <div class="project-info">
-                        <h3>Java Desktop Applications</h3>
-                        <p class="project-description">
-                            Developed multiple desktop applications including a calculator, Trivia game, and Hangman game 
-                            using Java and JavaFX. These projects demonstrate proficiency in GUI development and 
-                            object-oriented programming principles.
-                        </p>
-                        <div class="project-tech">
-                            <span class="tech-badge">Java</span>
-                            <span class="tech-badge">JavaFX</span>
-                            <span class="tech-badge">GUI Development</span>
-                            <span class="tech-badge">Desktop Applications</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" class="project-link">Live Demo</a>
-                            <a href="#" class="project-link">GitHub</a>
-                        </div>
-                    </div>
-                    <div class="project-visual">
-                        <span>🎮 Desktop Games</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="section">
-    <div class="container">
-        <h2 class="section-title"><span>Get In Touch</span></h2>
-        <div class="contact-content">
-            <p>Have an exciting project or opportunity? Let’s make something great together.</p>
-            <div style="margin: 2rem 0;">
-                <a href="mailto:tovadavis0@gmail.com" class="submit-btn">📧 Email Me</a>
-            </div>
-        </div>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-toggle" onclick="toggleNav()">
+      <div class="nav-line"></div><div class="nav-line"></div><div class="nav-line"></div>
     </div>
-    </section>
-    
+    <div class="nav-menu" id="navMenu">
+      <a href="#home" onclick="closeNav()">Home</a>
+      <a href="#about" onclick="closeNav()">About</a>
+      <a href="#skills" onclick="closeNav()">Skills</a>
+      <a href="#projects" onclick="closeNav()">Projects</a>
+      <a href="#contact" onclick="closeNav()">Contact</a>
+    </div>
+  </nav>
 
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://linkedin.com/in/tovadavis" class="social-link">Li</a>
-                <a href="https://github.com/tovadavis" class="social-link">Gh</a>
-                <a href="mailto:tovadavis0@gmail.com" class="social-link">Em</a>
-                <a href="tel:0556720613" class="social-link">Ph</a>
-            </div>
-            <p>&copy; 2025 Tova Davis. All rights reserved.</p>
+  <!-- Hero -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-subtitle">SOFTWARE ENGINEER</div>
+        <h1 class="hero-title">Tova Davis</h1>
+        <p class="hero-description">
+          Enthusiastic developer with a strong technical foundation and positive "can do" attitude.
+          Quick learner who adapts well to new technologies and delivers innovative, high-quality solutions.
+        </p>
+        <a href="#projects" class="view-projects-btn">View Projects</a>
+      </div>
+
+      <!-- fun code snippet -->
+      <div class="code-animation">
+        <div class="">const developer = {</div>
+        <div>&nbsp;&nbsp;name: "Tova Davis",</div>
+        <div class="">&nbsp;&nbsp;skills: ["Java","C","Python"],</div>
+        <div class="">&nbsp;&nbsp;passion: "Problem Solving"</div>
+        <div>};</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="container">
+      <h2 class="section-title"><span class="">About Me</span></h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p class="">I'm a Computer Science graduate from The Open University of Israel with a strong technical foundation and excellent problem-solving skills. With experience tutoring programming courses and developing robust, scalable systems, I'm passionate about creating innovative solutions.</p><br>
+          <p class="">Motivated, independent, and detail-oriented, I excel in collaborative team environments. My communication skills and "can do" attitude drive me to learn quickly and contribute meaningfully, even when working with technologies I've never used before.</p>
         </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        function toggleNav() {
-            const navMenu = document.getElementById('navMenu');
-            navMenu.classList.toggle('active');
-        }
+  <!-- Skills -->
+  <section id="skills" class="section">
+    <div class="container">
+      <h2 class="section-title"><span class="">Technical Skills</span></h2>
 
-        function closeNav() {
-            const navMenu = document.getElementById('navMenu');
-            navMenu.classList.remove('active');
-        }
+      <div class="skills-container">
+        <!-- Programming Languages -->
+        <div class="skill-category">
+          <h3 class="">Programming Languages</h3>
+          <div class="skill-list">
+            <span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">Python</span>
+            <span class="skill-tag">C++</span><span class="skill-tag">HTML</span><span class="skill-tag">SQL</span>
+          </div>
+        </div>
 
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        <!-- NEW: Technologies & Operating Systems -->
+        <div class="skill-category">
+          <h3 class="">Technologies &amp; Operating Systems</h3>
+          <div class="skill-list">
+            <!-- from old "Frameworks & Technologies" -->
+            <span class="skill-tag">Git</span>
+            <span class="skill-tag">Assembly</span>
+            <!-- merged in from "Operating Systems & Tools" -->
+            <span class="skill-tag">Linux</span><span class="skill-tag">Windows</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+  <!-- Projects -->
+  <section id="projects" class="section">
+    <div class="container">
+      <h2 class="section-title"><span class="">Featured Projects</span></h2>
+      <div class="projects-grid">
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
+        <!-- Auction Website -->
+        <div class="project-item">
+          <div class="project-info">
+            <h3 class="">Public Auction Website</h3>
+            <p class="project-description">
+              Developed a fully-featured auction site with a Java/Spring back end and a modern React interface. 
+              Handles duplicates efficiently and showcases robust, scalable design.
+            </p>
+            <div class="project-tech">
+              <span class="tech-badge">Java</span><span class="tech-badge">Spring</span>
+              <span class="tech-badge">React</span><span class="tech-badge">Web</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+            </div>
+          </div>
+          <div class="project-visual"><span>🏛️ Auction Platform</span></div>
+        </div>
 
-        // Observe elements for animation
-        document.querySelectorAll('.skill-category, .project-item, .stat-item').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'all 0.6s ease';
-            observer.observe(el);
-        });
+        <!-- Secure Messaging -->
+        <div class="project-item">
+          <div class="project-info">
+            <h3 class="">Secure Client-Server Messaging</h3>
+            <p class="project-description">
+              End-to-end encrypted client/server solution in Python based on the Kerberos protocol with an 
+              in-house KDC server. Earned a perfect final grade in Online Security.
+            </p>
+            <div class="project-tech">
+              <span class="tech-badge">Python</span><span class="tech-badge">Kerberos</span>
+              <span class="tech-badge">KDC Server</span><span class="tech-badge">Security</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+            </div>
+          </div>
+          <div class="project-visual"><span class="">🔐 Secure Messaging</span></div>
+        </div>
 
-        // Form submission
-        document.querySelector('.contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const submitBtn = this.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            setTimeout(() => {
-                alert('Message sent successfully!');
-                this.reset();
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }, 1000);
-        });
+        <!-- Assembler -->
+        <div class="project-item">
+          <div class="project-info">
+            <h3>Assembler System</h3>
+            <p class="project-description">
+              Converts assembly language into machine code. Built in C on Linux as part of a System Programming course, achieving a 96 grade.
+            </p>
+            <div class="project-tech">
+              <span class="tech-badge">C</span><span class="tech-badge">Linux</span>
+              <span class="tech-badge">Assembly</span><span class="tech-badge">System Programming</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+            </div>
+          </div>
+          <div class="project-visual"><span>⚙️ Assembler System</span></div>
+        </div>
 
-        // Close nav when clicking outside
-        document.addEventListener('click', function(e) {
-            const navMenu = document.getElementById('navMenu');
-            const navToggle = document.querySelector('.nav-toggle');
-            
-            if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
-                navMenu.classList.remove('active');
-            }
-        });
-    </script>
-</body>
-</html>
+        <!-- JavaFX Games -->
+        <div class="project-item">
+          <div class="project-info">
+            <h3>Java Desktop Applications</h3>
+            <p class="project-description">
+              A suite of JavaFX desktop apps—calculator, trivia, hangman—highlighting GUI design and OOP best practices.
+            </p>
+            <div class="project-tech">
+              <span class="tech-badge">Java</span><span class="tech-badge">JavaFX</span><span class="tech-badge">GUI</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+            </div>
+          </div>
+          <div class="project-visual"><span class="">🎮 Desktop Games</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="section">
+    <div class="container">
+      <h2 class="section-title"><span class="">Get In Touch</span></h2>
+      <div class="contact-content">
+        <p class="">Have an exciting project or opportunity? Let's make something great together.</p>
+        <div style="margin-top:2rem"><a href="mailto:tovadavis0@gmail.com" class="email-btn">Email Me</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="">
+    <div class="container">
+      <div class="social-links">
+        <a href="https://linkedin.com/in/tovadavis" class="social-link">LinkedIn</a>
+        <a href="https://github.com/tovadavis" class="social-link">GitHub</a>
+        <a href="mailto:tovadavis0@gmail.com" class="social-link">Email</a>
+        <a href="tel:0556720613" class="social-link">Phone</a>
+      </div>
+      <p class="">© 2025 Tova Davis. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    function toggleNav(){document.getElementById('navMenu').classList.toggle('active')}
+    function closeNav(){document.getElementById('navMenu').classList.remove('active')}
+
+    /* smooth scrolling */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+      anchor.addEventListener('click',e=>{
+        e.preventDefault();
+        const target=document.querySelector(anchor.getAttribute('href'));
+        target&&target.scrollIntoView({behavior:'smooth',block:'start'});
+        closeNav();
+      });
+    });
+  </script>
+</body></html>
