@@ -149,22 +149,8 @@
       .container{padding:0 1rem}
     }
 
-/* Language toggle button */
-.lang-toggle {
-  position: fixed;
-  top: 2rem;
-  left: 2rem;
-  /* עיצוב הכפתור */
-}
-
-/* Language sections */
-.lang-section {
-  display: none;
-}
-.lang-section.active {
-  display: block;
-}
-
+    .lang-toggle{position:fixed;top:2rem;left:2rem;z-index:1000;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#fff;border:none;padding:0.8rem 1.5rem;border-radius:50px;font-weight:600;cursor:pointer;box-shadow:0 4px 15px rgba(0,212,255,0.3);transition:all 0.3s ease;text-transform:uppercase;letter-spacing:1px}
+    .lang-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,255,0.4)}
 /* Hebrew section specific styles */
 .hebrew-section {
   direction: rtl;
