@@ -148,4 +148,25 @@
       .code-animation{display:none}
       .container{padding:0 1rem}
     }
+
+/* Language toggle button */
+.lang-toggle {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  /* עיצוב הכפתור */
+}
+
+/* Language sections */
+.lang-section {
+  display: none;
+}
+.lang-section.active {
+  display: block;
+}
+
+/* Hebrew section specific styles */
+.hebrew-section {
+  direction: rtl;
+  text-align: right;
   </style>
