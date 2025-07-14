@@ -1,24 +1,185 @@
-<html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tova Davis – Software Engineer</title>
-
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;color:#fff;line-height:1.6;overflow-x:hidden}
 
+    /* Animated background */
+    .bg-animation{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 20% 50%,#1a1a2e 0%,transparent 50%),radial-gradient(circle at 80% 20%,#16213e 0%,transparent 50%),radial-gradient(circle at 40% 80%,#0f3460 0%,transparent 50%);animation:bgShift 20s ease-in-out infinite}
+    @keyframes bgShift{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+    /* Navigation */
+    nav{position:fixed;top:0;right:0;padding:2rem;z-index:1000}
+    .nav-toggle{display:flex;flex-direction:column;gap:4px;cursor:pointer}
+    .nav-line{width:25px;height:2px;background:#00d4ff;transition:.3s}
+    .nav-menu{position:fixed;top:0;right:-100%;width:300px;height:100vh;background:rgba(10,10,10,.95);backdrop-filter:blur(10px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2rem;transition:right .3s}
+    .nav-menu.active{right:0}
+    .nav-menu a{color:#fff;text-decoration:none;font-size:1.2rem;font-weight:300;letter-spacing:2px;position:relative;transition:.3s}
+    .nav-menu a::after{content:'';position:absolute;width:0;height:2px;bottom:-5px;left:50%;background:#00d4ff;transition:.3s}
+    .nav-menu a:hover::after{width:100%;left:0}
+    .nav-menu a:hover{color:#00d4ff}
+
+    /* Language toggle button */
+    .lang-toggle{position:fixed;top:2rem;left:2rem;z-index:1000;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#fff;border:none;padding:0.8rem 1.5rem;border-radius:50px;font-weight:600;cursor:pointer;box-shadow:0 4px 15px rgba(0,212,255,0.3);transition:all 0.3s ease;text-transform:uppercase;letter-spacing:1px}
+    .lang-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,255,0.4)}
+
+    /* Containers & hero */
+    .container{max-width:1200px;margin:0 auto;padding:0 2rem}
+    .hero{height:100vh;display:flex;align-items:center;position:relative}
+    .hero-content{max-width:600px}
+    .hero-subtitle{font-size:1rem;color:#00d4ff;letter-spacing:3px;margin-bottom:1rem;animation:slideInLeft 1s ease .3s both}
+    .hero-title{font-size:4rem;font-weight:700;margin-bottom:1rem;animation:slideInLeft 1s ease .6s both}
+    .hero-description{font-size:1.2rem;color:#ccc;margin-bottom:2rem;animation:slideInLeft 1s ease .9s both}
+
+    /* View Projects button */
+    .view-projects-btn{
+      display:inline-block;
+      padding:1rem 2rem;
+      background:none;
+      border:2px solid #00d4ff;
+      color:#ffffff;
+      text-decoration:none;
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-weight:600;
+      position:relative;
+      overflow:hidden;
+      transition:all 0.3s ease;
+      animation:slideInLeft 1s ease 1.2s both;
+    }
+    .view-projects-btn::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:#00d4ff;
+      z-index:-1;
+      transition:left 0.3s ease;
+    }
+    .view-projects-btn:hover::before{
+      left:0;
+    }
+    .view-projects-btn:hover{
+      color:#0a0a0a;
+    }
+
+    @keyframes slideInLeft{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
+
+    .code-animation{position:absolute;right:5%;top:50%;transform:translateY(-50%);font-family:'Courier New',monospace;font-size:.9rem;color:#00d4ff;opacity:.3;animation:typewriter 4s steps(40) infinite}
+    @keyframes typewriter{0%{width:0}50%{width:100%}100%{width:0}}
+
+    /* Sections */
+    .section{padding:5rem 0;position:relative}
+    .section-title{font-size:2.5rem;margin-bottom:3rem;text-align:center}
+    .section-title span{color:#00d4ff}
+
+    /* Language sections */
+    .lang-section{display:none}
+    .lang-section.active{display:block}
+
+    /* Hebrew section specific styles */
+    .hebrew-section{direction:rtl;text-align:right}
+    .hebrew-section .hero-content{margin-right:0}
+    .hebrew-section .code-animation{right:auto;left:5%}
+    .hebrew-section .project-item:nth-child(even){direction:ltr}
+    .hebrew-section .project-item:nth-child(even)>*{direction:rtl}
+
+    /* About */
+    .about-content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+    .about-text{font-size:1.1rem;color:#ccc;line-height:1.8}
+
+    /* Skills */
+    .skills-container{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+    .skill-category{background:rgba(255,255,255,.05);padding:2rem;border-radius:10px;border:1px solid #333;transition:.3s}
+    .skill-category:hover{border-color:#00d4ff;background:rgba(0,212,255,.1)}
+    .skill-category h3{color:#00d4ff;margin-bottom:1.5rem;font-size:1.3rem}
+    .skill-list{display:flex;flex-wrap:wrap;gap:.5rem}
+    .skill-tag{background:#1a1a1a;padding:.5rem 1rem;border-radius:20px;font-size:.9rem;color:#ccc;border:1px solid #333;transition:.3s}
+    .skill-tag:hover{background:#00d4ff;color:#0a0a0a;border-color:#00d4ff}
+
+    /* Projects */
+    .projects-grid{display:grid;gap:3rem}
+    .project-item{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding:2rem 0;border-bottom:1px solid #333}
+    .project-item:nth-child(even){direction:rtl}.project-item:nth-child(even)>*{direction:ltr}
+    .project-info h3{color:#00d4ff;font-size:1.5rem;margin-bottom:1rem}
+    .project-description{color:#ccc;margin-bottom:1.5rem;line-height:1.6}
+    .project-tech{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+    .tech-badge{background:rgba(0,212,255,.1);color:#00d4ff;padding:.3rem .8rem;border-radius:15px;font-size:.8rem;border:1px solid #00d4ff}
+    .project-links{display:flex;gap:1rem}
+    .project-link{color:#fff;text-decoration:none;padding:.5rem 1rem;border:1px solid #666;border-radius:5px;transition:.3s;font-size:.9rem}
+    .project-link:hover{border-color:#00d4ff;color:#00d4ff}
+    .project-visual{height:250px;background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .project-visual::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(0,212,255,.1) 10px,rgba(0,212,255,.1) 20px)}
+    .project-visual span{font-size:1.2rem;color:#00d4ff;z-index:1}
+
+    /* Contact */
+    .contact-content{max-width:600px;margin:0 auto;text-align:center}
+    
+    /* Email button */
+    .email-btn{
+      display:inline-block;
+      padding:1rem 2rem;
+      background:none;
+      border:2px solid #00d4ff;
+      color:#ffffff;
+      border-radius:5px;
+      font-size:1rem;
+      text-decoration:none;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+      transition:all 0.3s ease;
+    }
+    .email-btn::before{
+      content:'';
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:#00d4ff;
+      z-index:-1;
+      transition:left 0.3s ease;
+    }
+    .email-btn:hover::before{
+      left:0;
+    }
+    .email-btn:hover{
+      color:#0a0a0a;
+    }
+
+    /* Footer */
+    footer{padding:2rem 0;text-align:center;border-top:1px solid #333;color:#888}
+    .social-links{display:flex;justify-content:center;gap:1rem;margin-bottom:1rem}
+    .social-link{width:80px;height:40px;border:1px solid #333;color:#888;text-decoration:none;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:.3s}
+    .social-link:hover{border-color:#00d4ff;color:#00d4ff}
+
+    /* Responsive */
+    @media(max-width:768px){
+      .hero-title{font-size:2.5rem}
+      .about-content{grid-template-columns:1fr;gap:2rem}
+      .project-item{grid-template-columns:1fr;gap:1.5rem}
+      .project-item:nth-child(even){direction:ltr}
+      .code-animation{display:none}
+      .container{padding:0 1rem}
+      .lang-toggle{top:1rem;left:1rem;padding:0.6rem 1.2rem}
+    }
+  </style>
 </head>
-  <link rel="stylesheet" href="styles.css">
-  <script src="scripts.js" defer></script>
-
-
-<body class="">
+<body>
   <div class="bg-animation"></div>
 
   <!-- Language Toggle Button -->
   <button class="lang-toggle" onclick="toggleLanguage()">
     <span id="langText">עברית</span>
   </button>
-
 
   <!-- Navigation -->
   <nav>
@@ -34,290 +195,303 @@
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section id="home" class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-subtitle">SOFTWARE ENGINEER</div>
-        <h1 class="hero-title">Tova Davis</h1>
-        <p class="hero-description">
-          Enthusiastic developer with a strong technical foundation and positive "can do" attitude.
-          Quick learner who adapts well to new technologies and delivers innovative, high-quality solutions.
-        </p>
-        <a href="#projects" class="view-projects-btn">View Projects</a>
-      </div>
-
-      <!-- fun code snippet -->
-      <div class="code-animation">
-        <div class="">const developer = {</div>
-        <div>&nbsp;&nbsp;name: "Tova Davis",</div>
-        <div class="">&nbsp;&nbsp;skills: ["Java","C","Python"],</div>
-        <div class="">&nbsp;&nbsp;passion: "Problem Solving"</div>
-        <div>};</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About -->
-  <section id="about" class="section">
-    <div class="container">
-      <h2 class="section-title"><span class="">About Me</span></h2>
-      <div class="about-content">
-        <div class="about-text">
-          <p class="">Computer Science graduate from The Open University of Israel with strong problem-solving skills and a solid technical foundation. Experienced in tutoring programming and building scalable systems. Motivated, detail-oriented, and quick to learn, I thrive in team environments and contribute effectively, even with unfamiliar technologies.</p><br>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Skills -->
-  <section id="skills" class="section">
-    <div class="container">
-      <h2 class="section-title"><span class="">Technical Skills</span></h2>
-
-      <div class="skills-container">
-        <!-- Programming Languages -->
-        <div class="skill-category">
-          <h3 class="">Programming Languages</h3>
-          <div class="skill-list">
-            <span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">Python</span>
-            <span class="skill-tag">C++</span><span class="skill-tag">HTML</span><span class="skill-tag">SQL</span>
-          </div>
+  <!-- English Section -->
+  <div id="englishSection" class="lang-section active">
+    <!-- Hero -->
+    <section id="home" class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-subtitle">SOFTWARE ENGINEER</div>
+          <h1 class="hero-title">Tova Davis</h1>
+          <p class="hero-description">
+            Enthusiastic developer with a strong technical foundation and positive "can do" attitude.
+            Quick learner who adapts well to new technologies and delivers innovative, high-quality solutions.
+          </p>
+          <a href="#projects" class="view-projects-btn">View Projects</a>
         </div>
 
-        <!-- NEW: Technologies & Operating Systems -->
-        <div class="skill-category">
-          <h3 class="">Technologies &amp; Operating Systems</h3>
-          <div class="skill-list">
-            <!-- from old "Frameworks & Technologies" -->
-            <span class="skill-tag">Git</span>
-            <span class="skill-tag">Assembly</span>
-            <!-- merged in from "Operating Systems & Tools" -->
-            <span class="skill-tag">Linux</span><span class="skill-tag">Windows</span>
+        <!-- fun code snippet -->
+        <div class="code-animation">
+          <div>const developer = {</div>
+          <div>&nbsp;&nbsp;name: "Tova Davis",</div>
+          <div>&nbsp;&nbsp;skills: ["Java","C","Python"],</div>
+          <div>&nbsp;&nbsp;passion: "Problem Solving"</div>
+          <div>};</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section">
+      <div class="container">
+        <h2 class="section-title"><span>About Me</span></h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p>I'm a Computer Science graduate from The Open University of Israel with a strong technical foundation and excellent problem-solving skills. With experience tutoring programming courses and developing robust, scalable systems, I'm passionate about creating innovative solutions.</p><br>
+            <p>Motivated, independent, and detail-oriented, I excel in collaborative team environments. My communication skills and "can do" attitude drive me to learn quickly and contribute meaningfully, even when working with technologies I've never used before.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section id="projects" class="section">
-    <div class="container">
-      <h2 class="section-title"><span class="">Featured Projects</span></h2>
-      <div class="projects-grid">
-
-        <!-- Auction Website -->
-        <div class="project-item">
-          <div class="project-info">
-            <h3 class="">Public Auction Website</h3>
-            <p class="project-description">
-              Developed a fully-featured auction site with a Java/Spring back end and a modern React interface. 
-              Handles duplicates efficiently and showcases robust, scalable design.
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">Java</span><span class="tech-badge">Spring</span>
-              <span class="tech-badge">React</span><span class="tech-badge">Web</span>
-            </div>
-            <div class="project-links">
-              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
-            </div>
-          </div>
-          <div class="project-visual"><span>🏛️ Auction Platform</span></div>
-        </div>
-
-        <!-- Secure Messaging -->
-        <div class="project-item">
-          <div class="project-info">
-            <h3 class="">Secure Client-Server Messaging</h3>
-            <p class="project-description">
-              End-to-end encrypted client/server solution in Python based on the Kerberos protocol with an 
-              in-house KDC server. Earned a perfect final grade in Online Security.
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">Python</span><span class="tech-badge">Kerberos</span>
-              <span class="tech-badge">KDC Server</span><span class="tech-badge">Security</span>
-            </div>
-            <div class="project-links">
-              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
-            </div>
-          </div>
-          <div class="project-visual"><span class="">🔐 Secure Messaging</span></div>
-        </div>
-
-        <!-- Assembler -->
-        <div class="project-item">
-          <div class="project-info">
-            <h3>Assembler System</h3>
-            <p class="project-description">
-              Converts assembly language into machine code. Built in C on Linux as part of a System Programming course, achieving a 96 grade.
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">C</span><span class="tech-badge">Linux</span>
-              <span class="tech-badge">Assembly</span><span class="tech-badge">System Programming</span>
-            </div>
-            <div class="project-links">
-              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
-            </div>
-          </div>
-          <div class="project-visual"><span>⚙️ Assembler System</span></div>
-        </div>
-
-        <!-- JavaFX Games -->
-        <div class="project-item">
-          <div class="project-info">
-            <h3>Java Desktop Applications</h3>
-            <p class="project-description">
-              A suite of JavaFX desktop apps—calculator, trivia, hangman—highlighting GUI design and OOP best practices.
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">Java</span><span class="tech-badge">JavaFX</span><span class="tech-badge">GUI</span>
-            </div>
-            <div class="project-links">
-              <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
-            </div>
-          </div>
-          <div class="project-visual"><span class="">🎮 Desktop Games</span></div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" class="section">
-    <div class="container">
-      <h2 class="section-title"><span class="">Get In Touch</span></h2>
-      <div class="contact-content">
-        <p class="">Have an exciting project or opportunity? Let's make something great together.</p>
-        <div style="margin-top:2rem"><a href="mailto:tovadavis0@gmail.com" class="email-btn">Email Me</a></div>
-      </div>
-    </div>
-  </section>
-
-    <!-- Hebrew Section -->
-<section id="hebrew" class="section" dir="rtl" style="text-align:right">
-  <div class="container">
-    <!-- Hebrew Hero -->
-    <div class="hero-content">
-      <div class="hero-subtitle">מפתחת תוכנה</div>
-      <h1 class="hero-title">טובה דייויס</h1>
-      <p class="hero-description">
-        מפתחת נלהבת עם בסיס טכני חזק וראש פתוח. לומדת מהר, מסתגלת בקלות לטכנולוגיות חדשות, ויוצרת פתרונות חדשניים באיכות גבוהה.
-      </p>
-      <a href="#hebrew-projects" class="view-projects-btn">צפי בפרויקטים</a>
-    </div>
-
-    <!-- About Me -->
-    <div class="section" id="hebrew-about">
-      <h2 class="section-title"><span>קצת עליי</span></h2>
-      <div class="about-content">
-        <div class="about-text">
-          <p>בוגרת מדעי המחשב מהאוניברסיטה הפתוחה. יש לי יכולות טכניות חזקות, חשיבה אנליטית, ותשוקה לפתרון בעיות. הדרכתי קורסים בתכנות, ויצרתי מערכות יציבות ומדרגיות.</p><br>
-          <p>אני עצמאית, אחראית ושמה לב לפרטים. יודעת לעבוד היטב בצוות, מתקשרת בצורה מצוינת ומביאה גישה חיובית גם כשאני לומדת טכנולוגיות חדשות מההתחלה.</p>
-        </div>
-      </div>
-    </div>
+    </section>
 
     <!-- Skills -->
-    <div class="section" id="hebrew-skills">
-      <h2 class="section-title"><span>כישורים טכניים</span></h2>
-      <div class="skills-container">
-        <div class="skill-category">
-          <h3>שפות תכנות</h3>
-          <div class="skill-list">
-            <span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">Python</span>
-            <span class="skill-tag">C++</span><span class="skill-tag">HTML</span><span class="skill-tag">SQL</span>
+    <section id="skills" class="section">
+      <div class="container">
+        <h2 class="section-title"><span>Technical Skills</span></h2>
+        <div class="skills-container">
+          <div class="skill-category">
+            <h3>Programming Languages</h3>
+            <div class="skill-list">
+              <span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">Python</span>
+              <span class="skill-tag">C++</span><span class="skill-tag">HTML</span><span class="skill-tag">SQL</span>
+            </div>
           </div>
-        </div>
-        <div class="skill-category">
-          <h3>טכנולוגיות ומערכות הפעלה</h3>
-          <div class="skill-list">
-            <span class="skill-tag">Git</span><span class="skill-tag">Assembly</span>
-            <span class="skill-tag">Linux</span><span class="skill-tag">Windows</span>
+          <div class="skill-category">
+            <h3>Technologies & Operating Systems</h3>
+            <div class="skill-list">
+              <span class="skill-tag">Git</span><span class="skill-tag">Assembly</span>
+              <span class="skill-tag">Linux</span><span class="skill-tag">Windows</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
 
     <!-- Projects -->
-    <div class="section" id="hebrew-projects">
-      <h2 class="section-title"><span>פרויקטים נבחרים</span></h2>
-      <div class="projects-grid">
-
-        <div class="project-item">
-          <div class="project-info">
-            <h3>אתר מכרזים</h3>
-            <p class="project-description">
-              פיתוח אתר מכרזים עם Spring ו-Java בצד השרת וממשק React מודרני. המערכת מדרגית ומטפלת בכפילויות ביעילות.
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">Java</span><span class="tech-badge">Spring</span>
-              <span class="tech-badge">React</span><span class="tech-badge">Web</span>
+    <section id="projects" class="section">
+      <div class="container">
+        <h2 class="section-title"><span>Featured Projects</span></h2>
+        <div class="projects-grid">
+          <div class="project-item">
+            <div class="project-info">
+              <h3>Public Auction Website</h3>
+              <p class="project-description">
+                Developed a fully-featured auction site with a Java/Spring back end and a modern React interface. 
+                Handles duplicates efficiently and showcases robust, scalable design.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">Java</span><span class="tech-badge">Spring</span>
+                <span class="tech-badge">React</span><span class="tech-badge">Web</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+              </div>
             </div>
+            <div class="project-visual"><span>🏛️ Auction Platform</span></div>
           </div>
-          <div class="project-visual"><span>🏛️ אתר מכרזים</span></div>
-        </div>
 
-        <div class="project-item">
-          <div class="project-info">
-            <h3>הודעות מוצפנות לקוח/שרת</h3>
-            <p class="project-description">
-              יישום לקוח-שרת מאובטח ב-Python עם הצפנה מקצה לקצה ומנגנון Kerberos כולל שרת KDC עצמי. הפרויקט קיבל ציון 100 בקורס "אבטחת מידע".
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">Python</span><span class="tech-badge">Kerberos</span>
-              <span class="tech-badge">KDC</span><span class="tech-badge">Security</span>
+          <div class="project-item">
+            <div class="project-info">
+              <h3>Secure Client-Server Messaging</h3>
+              <p class="project-description">
+                End-to-end encrypted client/server solution in Python based on the Kerberos protocol with an 
+                in-house KDC server. Earned a perfect final grade in Online Security.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">Python</span><span class="tech-badge">Kerberos</span>
+                <span class="tech-badge">KDC Server</span><span class="tech-badge">Security</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+              </div>
             </div>
+            <div class="project-visual"><span>🔐 Secure Messaging</span></div>
           </div>
-          <div class="project-visual"><span>🔐 תקשורת מאובטחת</span></div>
-        </div>
 
-        <div class="project-item">
-          <div class="project-info">
-            <h3>מערכת אסמבלר</h3>
-            <p class="project-description">
-              ממירה שפת Assembly לקוד מכונה. נכתבה ב-C בלינוקס כחלק מקורס מערכות, עם ציון 96.
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">C</span><span class="tech-badge">Linux</span>
-              <span class="tech-badge">Assembly</span>
+          <div class="project-item">
+            <div class="project-info">
+              <h3>Assembler System</h3>
+              <p class="project-description">
+                Converts assembly language into machine code. Built in C on Linux as part of a System Programming course, achieving a 96 grade.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">C</span><span class="tech-badge">Linux</span>
+                <span class="tech-badge">Assembly</span><span class="tech-badge">System Programming</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+              </div>
             </div>
+            <div class="project-visual"><span>⚙️ Assembler System</span></div>
           </div>
-          <div class="project-visual"><span>⚙️ אסמבלר</span></div>
-        </div>
 
-        <div class="project-item">
-          <div class="project-info">
-            <h3>אפליקציות שולחניות ב-Java</h3>
-            <p class="project-description">
-              סדרת משחקים ואפליקציות ב-JavaFX: מחשבון, חידון ותלוי. הדגשה של עיצוב GUI ועקרונות תכנות מונחה עצמים.
-            </p>
-            <div class="project-tech">
-              <span class="tech-badge">Java</span><span class="tech-badge">JavaFX</span><span class="tech-badge">GUI</span>
+          <div class="project-item">
+            <div class="project-info">
+              <h3>Java Desktop Applications</h3>
+              <p class="project-description">
+                A suite of JavaFX desktop apps—calculator, trivia, hangman—highlighting GUI design and OOP best practices.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">Java</span><span class="tech-badge">JavaFX</span><span class="tech-badge">GUI</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">Live Demo</a><a href="#" class="project-link">GitHub</a>
+              </div>
             </div>
+            <div class="project-visual"><span>🎮 Desktop Games</span></div>
           </div>
-          <div class="project-visual"><span>🎮 אפליקציות שולחניות</span></div>
         </div>
-
       </div>
-    </div>
+    </section>
 
     <!-- Contact -->
-    <div class="section" id="hebrew-contact">
-      <h2 class="section-title"><span>צרו קשר</span></h2>
-      <div class="contact-content">
-        <p>יש לכם רעיון איך להתקדם עוד? מוזמנים לפנות אליי בכל עת.</p>
-        <div style="margin-top:2rem">
-          <a href="mailto:tovadavis0@gmail.com" class="email-btn">שלחו מייל</a>
+    <section id="contact" class="section">
+      <div class="container">
+        <h2 class="section-title"><span>Get In Touch</span></h2>
+        <div class="contact-content">
+          <p>Have an exciting project or opportunity? Let's make something great together.</p>
+          <div style="margin-top:2rem"><a href="mailto:tovadavis0@gmail.com" class="email-btn">Email Me</a></div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
-</section>
 
+  <!-- Hebrew Section -->
+  <div id="hebrewSection" class="lang-section hebrew-section">
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-subtitle">מפתחת תוכנה</div>
+          <h1 class="hero-title">טובה דייויס</h1>
+          <p class="hero-description">
+            מפתחת נלהבת עם בסיס טכני חזק וגישה חיובית. לומדת מהר, מסתגלת בקלות לטכנולוגיות חדשות, ויוצרת פתרונות חדשניים באיכות גבוהה.
+          </p>
+          <a href="#hebrew-projects" class="view-projects-btn">צפי בפרויקטים</a>
+        </div>
+
+        <div class="code-animation">
+          <div>const developer = {</div>
+          <div>&nbsp;&nbsp;name: "טובה דייויס",</div>
+          <div>&nbsp;&nbsp;skills: ["Java","C","Python"],</div>
+          <div>&nbsp;&nbsp;passion: "פתרון בעיות"</div>
+          <div>};</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title"><span>קצת עליי</span></h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p>בוגרת מדעי המחשב מהאוניברסיטה הפתוחה. יש לי יכולות טכניות חזקות, חשיבה אנליטית, ותשוקה לפתרון בעיות. הדרכתי קורסים בתכנות, ויצרתי מערכות יציבות ומדרגיות.</p><br>
+            <p>אני עצמאית, אחראית ושמה לב לפרטים. יודעת לעבוד היטב בצוות, מתקשרת בצורה מצוינת ומביאה גישה חיובית גם כשאני לומדת טכנולוגיות חדשות מההתחלה.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title"><span>כישורים טכניים</span></h2>
+        <div class="skills-container">
+          <div class="skill-category">
+            <h3>שפות תכנות</h3>
+            <div class="skill-list">
+              <span class="skill-tag">Java</span><span class="skill-tag">C</span><span class="skill-tag">Python</span>
+              <span class="skill-tag">C++</span><span class="skill-tag">HTML</span><span class="skill-tag">SQL</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>טכנולוגיות ומערכות הפעלה</h3>
+            <div class="skill-list">
+              <span class="skill-tag">Git</span><span class="skill-tag">Assembly</span>
+              <span class="skill-tag">Linux</span><span class="skill-tag">Windows</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="hebrew-projects" class="section">
+      <div class="container">
+        <h2 class="section-title"><span>פרויקטים נבחרים</span></h2>
+        <div class="projects-grid">
+          <div class="project-item">
+            <div class="project-info">
+              <h3>אתר מכרזים</h3>
+              <p class="project-description">
+                פיתוח אתר מכרזים עם Spring ו-Java בצד השרת וממשק React מודרני. המערכת מדרגית ומטפלת בכפילויות ביעילות.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">Java</span><span class="tech-badge">Spring</span>
+                <span class="tech-badge">React</span><span class="tech-badge">Web</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">דמו</a><a href="#" class="project-link">GitHub</a>
+              </div>
+            </div>
+            <div class="project-visual"><span>🏛️ אתר מכרזים</span></div>
+          </div>
+
+          <div class="project-item">
+            <div class="project-info">
+              <h3>הודעות מוצפנות לקוח/שרת</h3>
+              <p class="project-description">
+                יישום לקוח-שרת מאובטח ב-Python עם הצפנה מקצה לקצה ומנגנון Kerberos כולל שרת KDC עצמי. הפרויקט קיבל ציון 100 בקורס "אבטחת מידע".
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">Python</span><span class="tech-badge">Kerberos</span>
+                <span class="tech-badge">KDC</span><span class="tech-badge">Security</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">דמו</a><a href="#" class="project-link">GitHub</a>
+              </div>
+            </div>
+            <div class="project-visual"><span>🔐 תקשורת מאובטחת</span></div>
+          </div>
+
+          <div class="project-item">
+            <div class="project-info">
+              <h3>מערכת אסמבלר</h3>
+              <p class="project-description">
+                ממירה שפת Assembly לקוד מכונה. נכתבה ב-C בלינוקס כחלק מקורס מערכות, עם ציון 96.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">C</span><span class="tech-badge">Linux</span>
+                <span class="tech-badge">Assembly</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">דמו</a><a href="#" class="project-link">GitHub</a>
+              </div>
+            </div>
+            <div class="project-visual"><span>⚙️ אסמבלר</span></div>
+          </div>
+
+          <div class="project-item">
+            <div class="project-info">
+              <h3>אפליקציות שולחניות ב-Java</h3>
+              <p class="project-description">
+                סדרת משחקים ואפליקציות ב-JavaFX: מחשבון, חידון ותלוי. הדגשה של עיצוב GUI ועקרונות תכנות מונחה עצמים.
+              </p>
+              <div class="project-tech">
+                <span class="tech-badge">Java</span><span class="tech-badge">JavaFX</span><span class="tech-badge">GUI</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">דמו</a><a href="#" class="project-link">GitHub</a>
+              </div>
+            </div>
+            <div class="project-visual"><span>🎮 אפליקציות שולחניות</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title"><span>צרו קשר</span></h2>
+        <div class="contact-content">
+          <p>יש לכם רעיון איך להתקדם עוד? מוזמנים לפנות אליי בכל עת.</p>
+          <div style="margin-top:2rem">
+            <a href="mailto:tovadavis0@gmail.com" class="email-btn">שלחו מייל</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
   
   <!-- Footer -->
-  <footer class="">
+  <footer>
     <div class="container">
       <div class="social-links">
         <a href="https://linkedin.com/in/tovadavis" class="social-link">LinkedIn</a>
@@ -325,9 +499,49 @@
         <a href="mailto:tovadavis0@gmail.com" class="social-link">Email</a>
         <a href="tel:0556720613" class="social-link">Phone</a>
       </div>
-      <p class="">© 2025 Tova Davis. All rights reserved.</p>
+      <p>© 2025 Tova Davis. All rights reserved.</p>
     </div>
   </footer>
 
-
-</body></html>
+  <script>
+    let currentLang = 'en';
+    
+    function toggleLanguage() {
+      const englishSection = document.getElementById('englishSection');
+      const hebrewSection = document.getElementById('hebrewSection');
+      const langText = document.getElementById('langText');
+      
+      if (currentLang === 'en') {
+        englishSection.classList.remove('active');
+        hebrewSection.classList.add('active');
+        langText.textContent = 'English';
+        currentLang = 'he';
+      } else {
+        hebrewSection.classList.remove('active');
+        englishSection.classList.add('active');
+        langText.textContent = 'עברית';
+        currentLang = 'en';
+      }
+    }
+    
+    function toggleNav() {
+      document.getElementById('navMenu').classList.toggle('active');
+    }
+    
+    function closeNav() {
+      document.getElementById('navMenu').classList.remove('active');
+    }
+    
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({behavior: 'smooth', block: 'start'});
+        }
+        closeNav();
+      });
+    });
+  </script>
+</body>
