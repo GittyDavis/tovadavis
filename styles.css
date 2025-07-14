@@ -1,4 +1,4 @@
-<style>
+  <style>
     *{margin:0;padding:0;box-sizing:border-box}
     body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0a0a;color:#fff;line-height:1.6;overflow-x:hidden}
 
@@ -17,6 +17,10 @@
     .nav-menu a:hover::after{width:100%;left:0}
     .nav-menu a:hover{color:#00d4ff}
 
+    /* Language toggle button */
+    .lang-toggle{position:fixed;top:2rem;left:2rem;z-index:1000;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#fff;border:none;padding:0.8rem 1.5rem;border-radius:50px;font-weight:600;cursor:pointer;box-shadow:0 4px 15px rgba(0,212,255,0.3);transition:all 0.3s ease;text-transform:uppercase;letter-spacing:1px}
+    .lang-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,255,0.4)}
+
     /* Containers & hero */
     .container{max-width:1200px;margin:0 auto;padding:0 2rem}
     .hero{height:100vh;display:flex;align-items:center;position:relative}
@@ -25,7 +29,7 @@
     .hero-title{font-size:4rem;font-weight:700;margin-bottom:1rem;animation:slideInLeft 1s ease .6s both}
     .hero-description{font-size:1.2rem;color:#ccc;margin-bottom:2rem;animation:slideInLeft 1s ease .9s both}
 
-    /* View Projects button - New clean class */
+    /* View Projects button */
     .view-projects-btn{
       display:inline-block;
       padding:1rem 2rem;
@@ -69,6 +73,17 @@
     .section-title{font-size:2.5rem;margin-bottom:3rem;text-align:center}
     .section-title span{color:#00d4ff}
 
+    /* Language sections */
+    .lang-section{display:none}
+    .lang-section.active{display:block}
+
+    /* Hebrew section specific styles */
+    .hebrew-section{direction:rtl;text-align:right}
+    .hebrew-section .hero-content{margin-right:0}
+    .hebrew-section .code-animation{right:auto;left:5%}
+    .hebrew-section .project-item:nth-child(even){direction:ltr}
+    .hebrew-section .project-item:nth-child(even)>*{direction:rtl}
+
     /* About */
     .about-content{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
     .about-text{font-size:1.1rem;color:#ccc;line-height:1.8}
@@ -100,7 +115,7 @@
     /* Contact */
     .contact-content{max-width:600px;margin:0 auto;text-align:center}
     
-    /* Email button - New clean class */
+    /* Email button */
     .email-btn{
       display:inline-block;
       padding:1rem 2rem;
@@ -147,12 +162,6 @@
       .project-item:nth-child(even){direction:ltr}
       .code-animation{display:none}
       .container{padding:0 1rem}
+      .lang-toggle{top:1rem;left:1rem;padding:0.6rem 1.2rem}
     }
-
-    .lang-toggle{position:fixed;top:2rem;left:2rem;z-index:1000;background:linear-gradient(135deg,#00d4ff,#0099cc);color:#fff;border:none;padding:0.8rem 1.5rem;border-radius:50px;font-weight:600;cursor:pointer;box-shadow:0 4px 15px rgba(0,212,255,0.3);transition:all 0.3s ease;text-transform:uppercase;letter-spacing:1px}
-    .lang-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,212,255,0.4)}
-/* Hebrew section specific styles */
-.hebrew-section {
-  direction: rtl;
-  text-align: right;
   </style>
