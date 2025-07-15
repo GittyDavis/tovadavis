@@ -29,13 +29,7 @@
       }
     }
     
-    function toggleNav() {
-      document.getElementById('navMenu').classList.toggle('active');
-    }
     
-    function closeNav() {
-      document.getElementById('navMenu').classList.remove('active');
-    }
     
     // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -45,12 +39,10 @@
         if (target) {
           target.scrollIntoView({behavior: 'smooth', block: 'start'});
         }
-        closeNav();
       });
     });
   </script>
 <body>
-    <script src="scripts.js" defer></script>
    <link rel="stylesheet" href="styles.css">
   <div class="bg-animation"></div>
    
@@ -59,19 +51,7 @@
     <span id="langText">עברית</span>
   </button>
 
-  <!-- Navigation -->
-  <nav>
-    <div class="nav-toggle" onclick="toggleNav()">
-      <div class="nav-line"></div><div class="nav-line"></div><div class="nav-line"></div>
-    </div>
-    <div class="nav-menu" id="navMenu">
-      <a href="#home" onclick="closeNav()">Home</a>
-      <a href="#about" onclick="closeNav()">About</a>
-      <a href="#skills" onclick="closeNav()">Skills</a>
-      <a href="#projects" onclick="closeNav()">Projects</a>
-      <a href="#contact" onclick="closeNav()">Contact</a>
-    </div>
-  </nav>
+
 
   <!-- English Section -->
   <div id="englishSection" class="lang-section active">
